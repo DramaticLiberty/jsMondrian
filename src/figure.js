@@ -1,27 +1,4 @@
 
-class RectangleNodePainter {
-    constructor() {
-        // adds rectangles to Figures
-    }
-
-    width(modelWidth) {
-        this.modelWidth = modelWidth;
-        return this;
-    }
-
-    height(modelHeight) {
-        this.modelHeight = modelHeight;
-        return this;
-    }
-}
-
-class SuperSmartRectangleNodePainter {
-    constructor() {
-        // position, color, width, height
-        // modifiers normal, hover (tap), selected (tap-hold), visibility
-    }
-}
-
 class Figure {
     constructor() {
     }
@@ -36,6 +13,7 @@ class Figure {
     }
     
     renderOn(canvas) {
+        canvas.renderFigure(this);
         return this;
     }
 }
@@ -48,5 +26,17 @@ class FlowLayout {
 class SVGRenderer {
     constructor(domElem) {
         this.domElem = domElem;
+    }
+
+    renderFigure(fig) {
+        d3.select(this.domElem)
+          .selectAll('svg')
+          .data(['jsMondrian'])
+          .enter()
+          .append('svg')
+            .attr("width", '100%')
+            .attr("height", '100%')
+          .append('g')
+          .call(() => 'jsMondrian');
     }
 }

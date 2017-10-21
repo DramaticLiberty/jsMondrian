@@ -99,5 +99,3 @@ class ObjectModels {
         fig.renderOn(svg);
     }
 }
-
-new ObjectModels().main()
