@@ -36,7 +36,15 @@ class SVGRenderer {
           .append('svg')
             .attr("width", '100%')
             .attr("height", '100%')
-          .append('g')
+            .attr("class", 'jsMondrian')
           .call(() => 'jsMondrian');
+        let svg = d3.select('svg.jsMondrian');
+        svg.selectAll('circle')
+           .data([1, 2, 3, 4])
+           .enter()
+           .append('circle')
+           .attr('cy', 60)
+           .attr('cx', (model, i) => { return 50 + i*100; })
+           .attr('r', (model, i) => { return 10 + i*10; })
     }
 }
