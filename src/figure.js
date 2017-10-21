@@ -1,15 +1,22 @@
 
 class Figure {
     constructor() {
+        this.figureNodes = {};
     }
 
-    nodes(nodes, painter) {
+    nodes(entities, painter) {
+        for (let index in entities) {
+            let entity = entities[index];
+            this.figureNodes[entity] = painter.newNode(entity);
+        }
     }
     
     edges(edges, painter) {
+        // TODO: implement or remove edges
     }
 
     layout(layout) {
+        // TODO: implement or remove layout
     }
     
     renderOn(canvas) {

@@ -60,7 +60,7 @@ class ObjectModels {
         let edges = []
         edges.push(new ComplexDuo(b, a));
         edges.push(new ComplexDuo(c, a));
-        return nodes, edges;
+        return [nodes, edges];
     }
 
     getSomeEllipses() {
@@ -87,7 +87,8 @@ class ObjectModels {
     }
 
     main() {
-        let numbers, edges = this.getSomeNumbers();
+        let numbers, edges;
+        [numbers, edges] = this.getSomeNumbers();
         
         let fig = new Figure();
         fig.nodes(numbers, new RectangleNodePainter()
