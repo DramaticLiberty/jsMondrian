@@ -22,6 +22,13 @@ class ComplexNumber {
     }
 }
 
+class ComplexDuo {
+    constructor(a, b) {
+        this.a = a;
+        this.b = b;
+    }
+}
+
 class EllipseModel {
     constructor(x, y, rx, ry, color) {
         this.x = x;
@@ -43,11 +50,17 @@ class RectangleModel {
 
 class ObjectModels {
     getSomeNumbers() {
+        let a = new ComplexNumber( 20, 20);
+        let b = new ComplexNumber(100,100);
+        let c = new ComplexNumber( 50, 50);
         let nodes = [];
-        nodes.push(new ComplexNumber(20,20));
-        nodes.push(new ComplexNumber(100,100));
-        nodes.push(new ComplexNumber(50,50));    
-        return nodes;
+        nodes.push(a);
+        nodes.push(b);
+        nodes.push(c);
+        let edges = []
+        edges.push(new ComplexDuo(b, a));
+        edges.push(new ComplexDuo(c, a));
+        return nodes, edges;
     }
 
     getSomeEllipses() {
@@ -68,4 +81,23 @@ class ObjectModels {
         nodes.push(new RectangleModel(76, 159, 60, 51));
         return nodes;
     }
+
+    getCanvas() {
+        return document.getElementById('container');
+    }
+
+    main() {
+        let numbers, edges = this.getSomeNumbers();
+        
+        let fig = new Figure();
+        fig.nodes(numbers, new RectangleNodePainter()
+                .width((number) => number.real)
+                .height((number) => number.imaginary)
+        );
+        fig.layout(new FlowLayout());
+        let svg = new SVGRenderer(this.getCanvas());
+        fig.renderOn(svg);
+    }
 }
+
+new ObjectModels().main()
