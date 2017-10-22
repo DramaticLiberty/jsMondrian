@@ -92,16 +92,22 @@ class ObjectModels {
         
         let rendition = new SVGRenderer(this.getCanvas());
         let fig = new Figure();
-        fig.canvas(rendition.svg)
-           .nodes(numbers)
+        fig.nodes(numbers)
            .paint(new RectangleNode()
                 .width((number) => number.real)
                 .height((number) => number.imaginary))
-           .paint(new FlowLayout());
+           .paint(new FlowLayout())
+           .commit(rendition.svg)
         fig.nodes(numbers)
-           .paint(new RectangleNode()
+           .paint(new EllipseNode()
                 .width((number) => number.imaginary)
                 .height((number) => number.real))
-           .paint(new FlowLayout(false, 5, 50));
+           .paint(new FlowLayout(false, 5, 50))
+           .commit(rendition.svg)
+           .edges(edges)
+           .paint(new LineEdge()
+                 .from((duo) => duo.a)
+                 .to((duo) => duo.b))
+           .commit(rendition.svg)
     }
 }

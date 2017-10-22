@@ -15,6 +15,8 @@ class Node {
 class Painter {
     constructor() {
         this.dimensions = [];
+        this._addDimension('fill', (e) => '#C0C0C0');
+        this._addDimension('stroke', (e) => '#404040');
     }
 
     _addDimension(dimension, initialCB) {
@@ -42,30 +44,52 @@ class Painter {
     commit(svg) {
         return svg;
     }
+
+    colorize(svg) {
+        return svg
+           .attr('fill', (node, i) => node.fill())
+           .attr('stroke', (node, i) => node.stroke());
+    }
 }
 
 class RectangleNode extends Painter {
     constructor() {
         super()
-        this._addDimension('color', (e) => { return '#808080'; });
-        this._addDimension('width', (e) => { return 5; } );
-        this._addDimension('height', (e) => { return 5; } );
-        // this._addDimension('label', (e) => { return '' + e; });
+        this._addDimension('x', (e) => 0);
+        this._addDimension('y', (e) => 0);
+        this._addDimension('width', (e) => 5);
+        this._addDimension('height', (e) => 5);
+        this._addDimension('label', (e) => e+'');
     }
 
     commit(svg) {
-        return svg
+        return this.colorize(svg
            .append('rect')
-           .attr('width', (node, i) => { return node.width(); })
-           .attr('height', (node, i) => { return node.height(); });
+           .attr('x', (node, i) => node.x())
+           .attr('y', (node, i) => node.y())
+           .attr('width', (node, i) => node.width())
+           .attr('height', (node, i) => node.height())
+        );
+    }
+}
+
+class EllipseNode extends RectangleNode {
+    commit(svg) {
+        return this.colorize(svg
+           .append('ellipse')
+           .attr('cx', (node, i) => node.x() + node.width()/2)
+           .attr('cy', (node, i) => node.y() + node.height()/2)
+           .attr('rx', (node, i) => node.width()/2)
+           .attr('ry', (node, i) => node.height()/2)
+        );
     }
 }
 
 class FlowLayout extends Painter {
     constructor(horizontal, hSpace, vSpace, limit) {
         super();
-        this._addDimension('x', (e) => { return 0; } );
-        this._addDimension('y', (e) => { return 0; } );
+        this._addDimension('x', (e) => 0);
+        this._addDimension('y', (e) => 0);
         
         this.horizontal = ifUndefined(horizontal, true);
         this.limit = limit;
@@ -89,8 +113,8 @@ class FlowLayout extends Painter {
             let absx = x;
             let absy = y;
             this.paintNode(node);
-            node.x = () => { return absx; }
-            node.y = () => { return absy; }
+            node.x = () => absx;
+            node.y = () => absy;
             layoutWidth = Math.max(layoutWidth, x + node.width());
             layoutHeight = Math.max(layoutHeight, y + node.height());
             [x, y] = this.nextLocation(node, x, y, layoutWidth, layoutHeight);
@@ -115,19 +139,30 @@ class FlowLayout extends Painter {
         }
         return [nextX, nextY];
     }
-    
-    commit(svg) {
-        return svg
-           .attr('x', (node, i) => { return node.x(); })
-           .attr('y', (node, i) => { return node.y(); })
-    }
 }
 
-
-
-class SuperSmartRectangleNodePainter {
+class LineEdge extends Painter {
     constructor() {
-        // position, color, width, height
-        // modifiers normal, hover (tap), selected (tap-hold), visibility
+        super()
+        this._addDimension('from', (e) => null );
+        this._addDimension('to', (e) => null );
+    }
+
+    cx(node) {
+        return node.x() + node.width() / 2;
+    }
+
+    cy(node) {
+        return node.y() + node.height() / 2;
+    }
+
+    commit(svg) {
+        return this.colorize(svg
+           .append('line')
+           .attr('x1', (node, i) => this.cx(node.from().jsMondrianNode))
+           .attr('y1', (node, i) => this.cy(node.from().jsMondrianNode))
+           .attr('x2', (node, i) => this.cx(node.to().jsMondrianNode))
+           .attr('y2', (node, i) => this.cy(node.to().jsMondrianNode))
+        );
     }
 }
