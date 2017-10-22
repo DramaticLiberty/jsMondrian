@@ -127,20 +127,36 @@ class ObjectModels {
         let theGrid = [];
         for (let i=0; i<20; i++) {
             for (let j=0; j<15; j++) {
-                theGrid.push({x: i, y: j});
+                theGrid.push({
+                    color: '#F0F0F0',
+                    x: i,
+                    y: j
+                });
             }
         }
+
+        theGrid[81].color = '#C0C0C0';
+        theGrid[82].color = '#C0C0C0';
+        theGrid[96].color = '#C0C0C0';
+        theGrid[97].color = '#C0C0C0';
+
+        theGrid[141].color = '#C0C0C0';
+        theGrid[142].color = '#C0C0C0';
+        theGrid[156].color = '#C0C0C0';
+        theGrid[157].color = '#C0C0C0';
         
         let rendition = new SVGRenderer(this.getCanvas());
         let fig = new Figure();
         
         fig.nodes(theGrid)
            .paint(new RectangleNode()
-               .label((box) => 'A box')
+               .label(() => 'A box')
+               .fill((box) => box.color)
+               .stroke(() => '#A0A0A0')
                .x((box) => 10 + 40*box.x)
                .y((box) => 10 + 30*box.y)
-               .width((box) => 38)
-               .height((box) => 28)
+               .width(() => 38)
+               .height(() => 28)
            )
            .commit(rendition.svg)
     }
