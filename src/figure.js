@@ -1,7 +1,5 @@
 
 class Figure {
-    constructor() {
-    }
     
     nodes(entities) {
         this.figureNodes = [];

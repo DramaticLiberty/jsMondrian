@@ -122,4 +122,26 @@ class ObjectModels {
                  .height((eli) => eli.ry*2))
            .commit(rendition.svg);
     }
+
+    grid() {
+        let theGrid = [];
+        for (let i=0; i<20; i++) {
+            for (let j=0; j<15; j++) {
+                theGrid.push({x: i, y: j});
+            }
+        }
+        
+        let rendition = new SVGRenderer(this.getCanvas());
+        let fig = new Figure();
+        
+        fig.nodes(theGrid)
+           .paint(new RectangleNode()
+               .label((box) => 'A box')
+               .x((box) => 10 + 40*box.x)
+               .y((box) => 10 + 30*box.y)
+               .width((box) => 38)
+               .height((box) => 28)
+           )
+           .commit(rendition.svg)
+    }
 }
