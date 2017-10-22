@@ -90,13 +90,18 @@ class ObjectModels {
         let numbers, edges;
         [numbers, edges] = this.getSomeNumbers();
         
+        let rendition = new SVGRenderer(this.getCanvas());
         let fig = new Figure();
-        fig.nodes(numbers, new RectangleNodePainter()
+        fig.canvas(rendition.svg)
+           .nodes(numbers)
+           .paint(new RectangleNode()
                 .width((number) => number.real)
-                .height((number) => number.imaginary)
-        );
-        fig.layout(new FlowLayout());
-        let svg = new SVGRenderer(this.getCanvas());
-        fig.renderOn(svg);
+                .height((number) => number.imaginary))
+           .paint(new FlowLayout());
+        fig.nodes(numbers)
+           .paint(new RectangleNode()
+                .width((number) => number.imaginary)
+                .height((number) => number.real))
+           .paint(new FlowLayout(false, 5, 50));
     }
 }
