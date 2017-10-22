@@ -159,5 +159,9 @@ class ObjectModels {
                .height(() => 28)
            )
            .commit(rendition.svg)
+        window.setTimeout(function() {
+            theGrid[158].color = '#C0C0C0';
+            fig.reload();
+        }, 2000);
     }
 }

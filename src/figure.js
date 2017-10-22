@@ -1,5 +1,10 @@
 
 class Figure {
+
+    constructor() {
+        this.allNodes = [];
+        this.commits = [];
+    }
     
     nodes(entities) {
         this.figureNodes = [];
@@ -8,7 +13,9 @@ class Figure {
             let entity = entities[index];
             let node = new Node(entity);
             entity.jsMondrianNode = node;
+            node.jsMondrianId = this.allNodes.length;
             this.figureNodes.push(node);
+            this.allNodes.push(node);
         }
         return this;
     }
@@ -23,16 +30,32 @@ class Figure {
         return this;
     }
 
-    commit(svg) {
-        this.svg = svg;
-        let figure = this.svg
+    internalCommit(svg, nodes, painters) {
+        let figure = svg
                      .selectAll('jsMondrianFigure')
-                     .data(this.figureNodes)
+                     .data(nodes)
                      .enter();
-        for (let index in this.painters) {
-            figure = this.painters[index].commit(figure);
+        for (let index in painters) {
+            figure = painters[index].commit(figure);
         }
         return this;
+    }
+
+    commit(svg) {
+        this.internalCommit(svg, this.figureNodes, this.painters);
+        this.commits.push({
+            svg: svg,
+            nodes: this.figureNodes,
+            painters: this.painters
+        });
+        return this;
+    }
+
+    reload() {
+        for (let index in this.commits) {
+            let commit = this.commits[index];
+            this.internalCommit(commit.svg, commit.nodes, commit.painters);
+        }
     }
 }
 

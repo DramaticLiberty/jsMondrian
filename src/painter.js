@@ -49,10 +49,26 @@ class Painter {
         this._addDimension('label', (e) => e+'');
     }
 
-    colorize(svg) {
-        return svg
-           .attr('fill', (node, i) => node.fill())
-           .attr('stroke', (node, i) => node.stroke());
+    identity(attrs) {
+        attrs.id = (node, i) => node.jsMondrianId;
+        return attrs;
+    }
+
+    colorize(attrs) {
+        attrs.fill = (node, i) => node.fill();
+        attrs.stroke = (node, i) => node.stroke();
+        return attrs;
+    }
+
+    shape(svg, shape, attrs) {
+        attrs = this.identity(attrs);
+        attrs = this.colorize(attrs);
+
+        svg = svg
+           .append(shape)
+           .attrs(attrs);
+        svg = this.title(svg);
+        return svg;
     }
 
     title(svg) {

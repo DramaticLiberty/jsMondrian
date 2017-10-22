@@ -10,29 +10,23 @@ class RectangleNode extends Painter {
     }
 
     commit(svg) {
-        svg = svg
-           .append('rect')
-           .attr('x', (node, i) => node.x())
-           .attr('y', (node, i) => node.y())
-           .attr('width', (node, i) => node.width())
-           .attr('height', (node, i) => node.height());
-        svg = this.colorize(svg);
-        svg = this.title(svg);
-        return svg;
+        return this.shape(svg, 'rect', {
+            x: (node, i) => node.x(),
+            y: (node, i) => node.y(),
+            width: (node, i) => node.width(),
+            height: (node, i) => node.height()
+        });
     }
 }
 
 class EllipseNode extends RectangleNode {
     commit(svg) {
-        svg = svg
-           .append('ellipse')
-           .attr('cx', (node, i) => node.x() + node.width()/2)
-           .attr('cy', (node, i) => node.y() + node.height()/2)
-           .attr('rx', (node, i) => node.width()/2)
-           .attr('ry', (node, i) => node.height()/2);
-        svg = this.colorize(svg);
-        svg = this.title(svg);
-        return svg;
+        return this.shape(svg, 'ellipse', {
+            cx: (node, i) => node.x() + node.width()/2,
+            cy: (node, i) => node.y() + node.height()/2,
+            rx: (node, i) => node.width()/2,
+            ry: (node, i) => node.height()/2
+        });
     }
 }
 
@@ -53,12 +47,11 @@ class LineEdge extends Painter {
     }
 
     commit(svg) {
-        return this.colorize(svg
-           .append('line')
-           .attr('x1', (node, i) => this.cx(node.from().jsMondrianNode))
-           .attr('y1', (node, i) => this.cy(node.from().jsMondrianNode))
-           .attr('x2', (node, i) => this.cx(node.to().jsMondrianNode))
-           .attr('y2', (node, i) => this.cy(node.to().jsMondrianNode))
-        );
+        return this.shape(svg, 'line', {
+            x1: (node, i) => this.cx(node.from().jsMondrianNode),
+            y1: (node, i) => this.cy(node.from().jsMondrianNode),
+            x2: (node, i) => this.cx(node.to().jsMondrianNode),
+            y2: (node, i) => this.cy(node.to().jsMondrianNode)
+        });
     }
 }
