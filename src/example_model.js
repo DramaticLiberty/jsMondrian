@@ -65,13 +65,13 @@ class ObjectModels {
 
     getSomeEllipses() {
         let nodes = [];
-        nodes.push(new EllipseModel(50,  50, 20,  40, Color.RED.getRGB()));
-        nodes.push(new EllipseModel(25,  90, 60, 100, Color.BLUE.getRGB()));
-        nodes.push(new EllipseModel(75,  70, 45,  40, Color.BLUE.getRGB()));
-        nodes.push(new EllipseModel(95,  85, 17,  15, Color.WHITE.getRGB()));
-        nodes.push(new EllipseModel(75, 110, 60, 100, Color.RED.getRGB()));
-        nodes.push(new EllipseModel(35, 120, 35,  60, Color.WHITE.getRGB()));
-        nodes.push(new EllipseModel(95, 130, 30,  60, Color.WHITE.getRGB()));    
+        nodes.push(new EllipseModel(50,  50, 20,  40, '#FF0000'));
+        nodes.push(new EllipseModel(25,  90, 60, 100, '#0000FF'));
+        nodes.push(new EllipseModel(75,  70, 45,  40, '#0000FF'));
+        nodes.push(new EllipseModel(95,  85, 17,  15, '#FFFFFF'));
+        nodes.push(new EllipseModel(75, 110, 60, 100, '#FF0000'));
+        nodes.push(new EllipseModel(35, 120, 35,  60, '#FFFFFF'));
+        nodes.push(new EllipseModel(95, 130, 30,  60, '#FFFFFF'));
         return nodes;
     }
 
@@ -98,6 +98,7 @@ class ObjectModels {
                 .height((number) => number.imaginary))
            .paint(new FlowLayout())
            .commit(rendition.svg)
+
         fig.nodes(numbers)
            .paint(new EllipseNode()
                 .width((number) => number.imaginary)
@@ -109,5 +110,13 @@ class ObjectModels {
                  .from((duo) => duo.a)
                  .to((duo) => duo.b))
            .commit(rendition.svg)
+           .nodes(this.getSomeEllipses())
+           .paint(new EllipseNode()
+                 .fill((eli) => eli.color)
+                 .x((eli) => 5*eli.x - eli.rx)
+                 .y((eli) => 4*eli.y - eli.ry)
+                 .width((eli) => eli.rx*2)
+                 .height((eli) => eli.ry*2))
+           .commit(rendition.svg);
     }
 }
