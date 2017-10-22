@@ -6,7 +6,7 @@ class ComplexNumber {
     }
 
     asString() {
-        return this.real + 'i*' + this.imaginary;
+        return this.real + ' + i*' + this.imaginary;
     }
 
     sum() {
@@ -94,6 +94,7 @@ class ObjectModels {
         let fig = new Figure();
         fig.nodes(numbers)
            .paint(new RectangleNode()
+                .label((number) => number.asString())
                 .width((number) => number.real)
                 .height((number) => number.imaginary))
            .paint(new FlowLayout())
@@ -101,6 +102,7 @@ class ObjectModels {
 
         fig.nodes(numbers)
            .paint(new EllipseNode()
+                .label((number) => number.asString())
                 .width((number) => number.imaginary)
                 .height((number) => number.real))
            .paint(new FlowLayout(false, 5, 50))
@@ -112,6 +114,7 @@ class ObjectModels {
            .commit(rendition.svg)
            .nodes(this.getSomeEllipses())
            .paint(new EllipseNode()
+                 .label((eli) => eli.color=='#FFFFFF' ? 'A white ellipse' : 'A coloured ellipse')
                  .fill((eli) => eli.color)
                  .x((eli) => 5*eli.x - eli.rx)
                  .y((eli) => 4*eli.y - eli.ry)
