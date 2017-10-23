@@ -13,7 +13,7 @@ class Figure {
             let entity = entities[index];
             let node = new Node(entity);
             entity.jsMondrianNode = node;
-            node.jsMondrianId = this.allNodes.length;
+            node.jsMondrianId = 'n-' + this.allNodes.length;
             this.figureNodes.push(node);
             this.allNodes.push(node);
         }
@@ -25,6 +25,7 @@ class Figure {
     }
 
     paint(painter) {
+        painter.jsMondrianId = 'p-' + this.commits.length + '-' + this.painters.length;
         painter.paint(this.figureNodes);
         this.painters.push(painter);
         return this;
@@ -44,17 +45,16 @@ class Figure {
     commit(svg) {
         this.internalCommit(svg, this.figureNodes, this.painters);
         this.commits.push({
-            svg: svg,
             nodes: this.figureNodes,
             painters: this.painters
         });
         return this;
     }
 
-    reload() {
+    reload(svg) {
         for (let index in this.commits) {
             let commit = this.commits[index];
-            this.internalCommit(commit.svg, commit.nodes, commit.painters);
+            this.internalCommit(svg, commit.nodes, commit.painters);
         }
     }
 }

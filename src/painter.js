@@ -51,6 +51,7 @@ class Painter {
 
     identity(attrs) {
         attrs.id = (node, i) => node.jsMondrianId;
+        attrs.class = this.jsMondrianId;
         return attrs;
     }
 
@@ -64,6 +65,8 @@ class Painter {
         attrs = this.identity(attrs);
         attrs = this.colorize(attrs);
 
+        // Discard old shapes from this painter - essential on reloads
+        svg.selectAll(shape + '.' + this.jsMondrianId).remove();
         svg = svg
            .append(shape)
            .attrs(attrs);

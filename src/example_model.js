@@ -161,7 +161,7 @@ class ObjectModels {
            .commit(rendition.svg)
         window.setTimeout(function() {
             theGrid[158].color = '#C0C0C0';
-            fig.reload();
+            fig.reload(rendition.svg);
         }, 2000);
     }
 }
