@@ -128,7 +128,7 @@ class ObjectModels {
         for (let i=0; i<20; i++) {
             for (let j=0; j<15; j++) {
                 theGrid.push({
-                    color: '#F0F0F0',
+                    block: 0,
                     hover: false,
                     x: i,
                     y: j
@@ -136,31 +136,41 @@ class ObjectModels {
             }
         }
 
-        theGrid[81].color = '#C0C0C0';
-        theGrid[82].color = '#C0C0C0';
-        theGrid[96].color = '#C0C0C0';
-        theGrid[97].color = '#C0C0C0';
+        theGrid[81].block = 1;
+        theGrid[82].block = 1;
+        theGrid[96].block = 1;
+        theGrid[97].block = 1;
 
-        theGrid[141].color = '#C0C0C0';
-        theGrid[142].color = '#C0C0C0';
-        theGrid[156].color = '#C0C0C0';
-        theGrid[157].color = '#C0C0C0';
-        
         let rendition = new SVGRenderer(this.getCanvas());
         let fig = new Figure();
+        let palette = ['#F0F0F0', '#C0C0C0', '#83a6c7', '#FFFFFF'];
+        let crt = 1
         
         fig.nodes(theGrid)
            .paint(new RectangleNode()
                .label(() => 'A box')
-               .fill((box) => box.color)
+               .fill((box) => palette[box.block])
                .stroke((box) => box.hover ? '#101060' : '#106010')
                .x((box) => 10 + 40*box.x)
                .y((box) => 10 + 30*box.y)
                .width(() => 40)
                .height(() => 30)
-               .onClick((box) => {
-                   box.color = box.color == '#C0C0C0' ? '#F0F0F0': '#C0C0C0';
+               .onDblClick((box) => {
+                   box.block = (box.block + 1) % palette.length;
+                   crt = box.block;
                    fig.reload(rendition.svg);
+               })
+               .onClick((box) => {
+                   if (crt != box.block) {
+                       box.block = crt;
+                       fig.reload(rendition.svg);
+                   }
+               })
+               .onMouseMove((box) => {
+                   if (crt != box.block && rendition.isMouseDown) {
+                       box.block = crt;
+                       fig.reload(rendition.svg);
+                   }
                })
                .onMouseEnter((box) => {
                    box.hover = true;
@@ -173,10 +183,22 @@ class ObjectModels {
            )
            .commit(rendition.svg)
         window.setTimeout(function() {
-            theGrid[158].color = theGrid[158].color == '#C0C0C0' ? '#F0F0F0': '#C0C0C0';
-            theGrid[173].x = theGrid[173].x + 0.01;
-            theGrid[159].y = theGrid[159].y + 0.01;
+            theGrid[141].block = 1;
+            theGrid[142].block = 1;
             fig.reload(rendition.svg);
-        }, 200);
+        }, 1000);
+        window.setTimeout(function() {
+            theGrid[141].block = 1;
+            theGrid[142].block = 1;
+            theGrid[156].block = 1;
+            fig.reload(rendition.svg);
+        }, 2000);
+        window.setTimeout(function() {
+            theGrid[141].block = 1;
+            theGrid[142].block = 1;
+            theGrid[156].block = 1;
+            theGrid[157].block = 1;
+            fig.reload(rendition.svg);
+        }, 3000);
     }
 }

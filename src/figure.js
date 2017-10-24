@@ -58,17 +58,20 @@ class Figure {
     }
 }
 
-class SVGRenderer {
+class SVGRenderer extends Node {
     constructor(domElem) {
-        this.domElem = domElem;
+        super(domElem);
+        this.isMouseDown = false;
         this.svg = d3
-          .select(this.domElem)
+          .select(this.entity)
           .selectAll('svg')
           .data(['jsMondrian'])
           .enter()
           .append('svg')
           .attr("width", '100%')
           .attr("height", '100%')
+          .on('mousedown', () => { this.isMouseDown = true; })
+          .on('mouseup', () => { this.isMouseDown = false; })
         ;
     }
 }

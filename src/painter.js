@@ -51,8 +51,12 @@ class Painter {
 
     addInteractionDimensions() {
         this._addDimension('onClick', undefined);
+        this._addDimension('onDblClick', undefined);
         this._addDimension('onMouseEnter', undefined);
         this._addDimension('onMouseLeave', undefined);
+        this._addDimension('onMouseMove', undefined);
+        this._addDimension('onMouseDown', undefined);
+        this._addDimension('onMouseUp', undefined);
     }
 
     identity(attrs) {
@@ -84,9 +88,20 @@ class Painter {
            .text((node, i) => node.label());
 
         svg.merge(svg);
-        svg.on('click', (node, i) => node.onClick());
-        svg.on('mouseenter', (node, i) => node.onMouseEnter());
-        svg.on('mouseleave', (node, i) => node.onMouseLeave());
+        if (typeof this._onClick != 'undefined')
+            svg.on('click', (node, i) => node.onClick());
+        if (typeof this._onDblClick != 'undefined')
+            svg.on('dblclick', (node, i) => node.onDblClick());
+        if (typeof this._onMouseEnter != 'undefined')
+            svg.on('mouseenter', (node, i) => node.onMouseEnter());
+        if (typeof this._onMouseLeave != 'undefined')
+            svg.on('mouseleave', (node, i) => node.onMouseLeave());
+        if (typeof this._onMouseMove != 'undefined')
+            svg.on('mousemove', (node, i) => node.onMouseMove());
+        if (typeof this._onMouseDown != 'undefined')
+            svg.on('mousedown', (node, i) => node.onMouseDown());
+        if (typeof this._onMouseUp != 'undefined')
+            svg.on('mouseup', (node, i) => node.onMouseUp());
         return svg;
     }
 }
