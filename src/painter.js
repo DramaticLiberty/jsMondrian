@@ -39,7 +39,7 @@ class Painter {
         }
     }
 
-    commit(svg) {
+    commit(fig, nodes, svg) {
         return svg;
     }
 
@@ -47,6 +47,12 @@ class Painter {
         this._addDimension('fill', (e) => '#C0C0C0');
         this._addDimension('stroke', (e) => '#404040');
         this._addDimension('label', (e) => e+'');
+    }
+
+    addInteractionDimensions() {
+        this._addDimension('onClick', undefined);
+        this._addDimension('onMouseEnter', undefined);
+        this._addDimension('onMouseLeave', undefined);
     }
 
     identity(attrs) {
@@ -61,22 +67,26 @@ class Painter {
         return attrs;
     }
 
-    shape(svg, shape, attrs) {
+    shape(fig, nodes, svg, shape, attrs) {
         attrs = this.identity(attrs);
         attrs = this.colorize(attrs);
 
-        // Discard old shapes from this painter - essential on reloads
-        svg.selectAll(shape + '.' + this.jsMondrianId).remove();
         svg = svg
-           .append(shape)
-           .attrs(attrs);
-        svg = this.title(svg);
-        return svg;
-    }
+            .selectAll('#' + fig.jsMondrianId +' '+ shape +'.'+ this.jsMondrianId)
+            .data(nodes);
+        svg.attrs(attrs)
+           .select('title')
+           .text((node, i) => node.label());
 
-    title(svg) {
-        return svg
+        svg = svg.enter().append(shape);
+        svg.attrs(attrs)
            .append('title')
            .text((node, i) => node.label());
+
+        svg.merge(svg);
+        svg.on('click', (node, i) => node.onClick());
+        svg.on('mouseenter', (node, i) => node.onMouseEnter());
+        svg.on('mouseleave', (node, i) => node.onMouseLeave());
+        return svg;
     }
 }

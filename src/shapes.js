@@ -2,15 +2,16 @@
 class RectangleNode extends Painter {
     constructor() {
         super()
-        this.addColorDimensions()
+        this.addColorDimensions();
+        this.addInteractionDimensions();
         this._addDimension('x', (e) => 0);
         this._addDimension('y', (e) => 0);
         this._addDimension('width', (e) => 5);
         this._addDimension('height', (e) => 5);
     }
 
-    commit(svg) {
-        return this.shape(svg, 'rect', {
+    commit(fig, nodes, svg) {
+        return this.shape(fig, nodes, svg, 'rect', {
             x: (node, i) => node.x(),
             y: (node, i) => node.y(),
             width: (node, i) => node.width(),
@@ -20,8 +21,8 @@ class RectangleNode extends Painter {
 }
 
 class EllipseNode extends RectangleNode {
-    commit(svg) {
-        return this.shape(svg, 'ellipse', {
+    commit(fig, nodes, svg) {
+        return this.shape(fig, nodes, svg, 'ellipse', {
             cx: (node, i) => node.x() + node.width()/2,
             cy: (node, i) => node.y() + node.height()/2,
             rx: (node, i) => node.width()/2,
@@ -46,8 +47,8 @@ class LineEdge extends Painter {
         return node.y() + node.height() / 2;
     }
 
-    commit(svg) {
-        return this.shape(svg, 'line', {
+    commit(fig, nodes, svg) {
+        return this.shape(fig, nodes, svg, 'line', {
             x1: (node, i) => this.cx(node.from().jsMondrianNode),
             y1: (node, i) => this.cy(node.from().jsMondrianNode),
             x2: (node, i) => this.cx(node.to().jsMondrianNode),

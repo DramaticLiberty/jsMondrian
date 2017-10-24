@@ -1,7 +1,8 @@
 
 class Figure {
 
-    constructor() {
+    constructor(id) {
+        this.jsMondrianId = (typeof id != 'undefined') ? id : 'jsMondrianFigure';
         this.allNodes = [];
         this.commits = [];
     }
@@ -33,11 +34,9 @@ class Figure {
 
     internalCommit(svg, nodes, painters) {
         let figure = svg
-                     .selectAll('jsMondrianFigure')
-                     .data(nodes)
-                     .enter();
+            .attr('id', this.jsMondrianId);
         for (let index in painters) {
-            figure = painters[index].commit(figure);
+            figure = painters[index].commit(this, nodes, svg);
         }
         return this;
     }
@@ -62,15 +61,14 @@ class Figure {
 class SVGRenderer {
     constructor(domElem) {
         this.domElem = domElem;
-        d3.select(this.domElem)
+        this.svg = d3
+          .select(this.domElem)
           .selectAll('svg')
           .data(['jsMondrian'])
           .enter()
           .append('svg')
           .attr("width", '100%')
           .attr("height", '100%')
-          .attr("class", 'jsMondrian')
-          .call(() => 'jsMondrian');
-        this.svg = d3.select('svg.jsMondrian');
+        ;
     }
 }

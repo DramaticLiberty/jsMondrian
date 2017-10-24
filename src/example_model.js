@@ -129,6 +129,7 @@ class ObjectModels {
             for (let j=0; j<15; j++) {
                 theGrid.push({
                     color: '#F0F0F0',
+                    hover: false,
                     x: i,
                     y: j
                 });
@@ -152,16 +153,30 @@ class ObjectModels {
            .paint(new RectangleNode()
                .label(() => 'A box')
                .fill((box) => box.color)
-               .stroke(() => '#A0A0A0')
+               .stroke((box) => box.hover ? '#101060' : '#106010')
                .x((box) => 10 + 40*box.x)
                .y((box) => 10 + 30*box.y)
-               .width(() => 38)
-               .height(() => 28)
+               .width(() => 40)
+               .height(() => 30)
+               .onClick((box) => {
+                   box.color = box.color == '#C0C0C0' ? '#F0F0F0': '#C0C0C0';
+                   fig.reload(rendition.svg);
+               })
+               .onMouseEnter((box) => {
+                   box.hover = true;
+                   fig.reload(rendition.svg);
+               })
+               .onMouseLeave((box) => {
+                   box.hover = false;
+                   fig.reload(rendition.svg);
+               })
            )
            .commit(rendition.svg)
         window.setTimeout(function() {
-            theGrid[158].color = '#C0C0C0';
+            theGrid[158].color = theGrid[158].color == '#C0C0C0' ? '#F0F0F0': '#C0C0C0';
+            theGrid[173].x = theGrid[173].x + 0.01;
+            theGrid[159].y = theGrid[159].y + 0.01;
             fig.reload(rendition.svg);
-        }, 2000);
+        }, 200);
     }
 }

@@ -36,7 +36,7 @@ class FlowLayout extends Painter {
 
     nextHorizontal(node, x, y, layoutWidth, layoutHeight) {
         let nextX = x + this.hSpace + node.width(), nextY = y;
-        if (typeof this.limit != 'undefValue' && nextX > this.limit) {
+        if (typeof this.limit != 'undefined' && nextX > this.limit) {
             nextX = this.hSpace;
             nextY = layoutHeight + this.vSpace
         }
@@ -45,7 +45,7 @@ class FlowLayout extends Painter {
 
     nextVertical(node, x, y, layoutWidth, layoutHeight) {
         let nextX = x, nextY = y + this.vSpace + node.height();
-        if (typeof this.limit != 'undefValue' && nextY > this.limit) {
+        if (typeof this.limit != 'undefined' && nextY > this.limit) {
             nextY = this.vSpace;
             nextX = layoutWidth + this.hSpace
         }
