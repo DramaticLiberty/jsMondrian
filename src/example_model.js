@@ -150,11 +150,19 @@ class ObjectModels {
            .paint(new RectangleNode()
                .label(() => 'A box')
                .fill((box) => palette[box.block])
-               .stroke((box) => box.hover ? '#101060' : '#106010')
+               .stroke((box) => {
+                   if (box.hover) {
+                       return '#101060';
+                   } else if (box.block+1 < palette.length) {
+                       return '#106010';
+                   } else {
+                       return ;
+                   }
+               })
                .x((box) => 10 + 40*box.x)
                .y((box) => 10 + 30*box.y)
-               .width(() => 40)
-               .height(() => 30)
+               .width(() => 39)
+               .height(() => 29)
                .onDblClick((box) => {
                    box.block = (box.block + 1) % palette.length;
                    crt = box.block;
