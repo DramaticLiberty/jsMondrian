@@ -17,7 +17,8 @@ class Painter {
         this.dimensions = [];
         this.onevents = [
             'onClick', 'onDblClick', 'onMouseEnter', 'onMouseLeave',
-            'onMouseMove', 'onMouseDown', 'onMouseUp'
+            'onMouseMove', 'onMouseDown', 'onMouseUp',
+            'onTouchStart', 'onTouchEnd', 'onTouchMove'
         ];
     }
 

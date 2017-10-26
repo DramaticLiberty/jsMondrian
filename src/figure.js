@@ -61,7 +61,6 @@ class Figure {
 class SVGRenderer extends Node {
     constructor(domElem) {
         super(domElem);
-        this.isMouseDown = false;
         this.svg = d3
           .select(this.entity)
           .selectAll('svg')
@@ -70,8 +69,11 @@ class SVGRenderer extends Node {
           .append('svg')
           .attr("width", '100%')
           .attr("height", '100%')
-          .on('mousedown', () => { this.isMouseDown = true; })
-          .on('mouseup', () => { this.isMouseDown = false; })
         ;
+    }
+
+    on(event, handler) {
+        this.svg.on(event, handler);
+        return this;
     }
 }

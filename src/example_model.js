@@ -48,6 +48,57 @@ class RectangleModel {
     }    
 }
 
+class GridTile {
+    constructor(grid, x, y, type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.hover = false;
+        this.visible = true;
+        this.grid = grid;
+    }
+
+    tileColor() {
+        return this.grid.tileColor(this);
+    }
+
+    strokeColor() {
+        if (this.hover)
+            return '#101060';
+        if (this.visible)
+            return '#106010';
+        return;
+        // if (box.block+1 < palette.length)
+    }
+
+    
+}
+
+class Grid {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+        this.building =  bfalse;
+        this.palette = ['#F0F0F0', '#C0C0C0', '#83a6c7', '#FFFFFF'];
+        this.tiles = [];
+        for (let i=0; i<width; i++) {
+            for (let j=0; j<height; j++) {
+                this.tiles.push(new GridTile(this, i, j, 0));
+            }
+        }
+        this.isDrawing = false;
+        this.palette = ['#F0F0F0', '#C0C0C0', '#83a6c7', '#FFFFFF'];
+    }
+
+    setType(index, type) {
+        this.tiles[index].type = type;
+    }
+
+    tileColor(tile) {
+        return this.palette[tile.type % this.palette.length];
+    }
+}
+
 class ObjectModels {
     getSomeNumbers() {
         let a = new ComplexNumber( 20, 20);
@@ -124,32 +175,25 @@ class ObjectModels {
     }
 
     grid() {
-        let theGrid = [];
-        for (let i=0; i<20; i++) {
-            for (let j=0; j<15; j++) {
-                theGrid.push({
-                    block: 0,
-                    hover: false,
-                    x: i,
-                    y: j
-                });
-            }
-        }
-
-        theGrid[81].block = 1;
-        theGrid[82].block = 1;
-        theGrid[96].block = 1;
-        theGrid[97].block = 1;
-
+        let theGrid = new Grid(20, 15);
+        theGrid.setType(81, 1);
+        theGrid.setType(82, 1);
+        theGrid.setType(96, 1);
+        theGrid.setType(97, 1);
+        
         let rendition = new SVGRenderer(this.getCanvas());
+        rendition
+            .on('mousedown', () => { theGrid.isDrawing = true; })
+            .on('mouseup', () => { theGrid.isDrawing = false; });
+        
         let fig = new Figure();
         let palette = ['#F0F0F0', '#C0C0C0', '#83a6c7', '#FFFFFF'];
         let crt = 1
         
-        fig.nodes(theGrid)
+        fig.nodes(theGrid.tiles)
            .paint(new RectangleNode()
                .label(() => 'A box')
-               .fill((box) => palette[box.block])
+               .fill((box) => box.tileColor())
                .stroke((box) => {
                    if (box.hover) {
                        return '#101060';
@@ -191,21 +235,16 @@ class ObjectModels {
            )
            .commit(rendition.svg)
         window.setTimeout(function() {
-            theGrid[141].block = 1;
-            theGrid[142].block = 1;
+            theGrid.setType(141, 1);
+            theGrid.setType(142, 1);
             fig.reload(rendition.svg);
         }, 1000);
         window.setTimeout(function() {
-            theGrid[141].block = 1;
-            theGrid[142].block = 1;
-            theGrid[156].block = 1;
+            theGrid.setType(156, 1);
             fig.reload(rendition.svg);
         }, 2000);
         window.setTimeout(function() {
-            theGrid[141].block = 1;
-            theGrid[142].block = 1;
-            theGrid[156].block = 1;
-            theGrid[157].block = 1;
+            theGrid.setType(157, 1);
             fig.reload(rendition.svg);
         }, 3000);
     }
