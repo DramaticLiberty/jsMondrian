@@ -51,6 +51,7 @@ class Painter {
     addColorDimensions() {
         this._addDimension('fill', (e) => '#C0C0C0');
         this._addDimension('stroke', (e) => '#404040');
+        this._addDimension('strokeWidth', (e) => 1);
         this._addDimension('label', (e) => e+'');
     }
 
@@ -69,6 +70,7 @@ class Painter {
     colorize(attrs) {
         attrs.fill = (node, i) => node.fill();
         attrs.stroke = (node, i) => node.stroke();
+        attrs["stroke-width"] = (node, i) => node.strokeWidth();
         return attrs;
     }
 
