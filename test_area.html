@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <script src="d3.v4.min.js"></script>
+    
+    <!-- required for .attrs({some: attr, another: attr}) -->
+    <script src="d3-selection-multi.v1.min.js"></script>
+    
+    <script src="src/utility.js"></script>
+    <script src="src/painter.js"></script>    
+    <script src="src/figure.js"></script>
+    <script src="src/shapes.js"></script>
+    <script src="src/layouts.js"></script>
+    <script src="src/example_model.js"></script>
+    <script src="src/area_example.js"></script>
+    <meta http-equiv="_refresh" content="3">
+    <style>
+
+     #container {
+       display: block;
+       width: 900px;
+       height: 600px;
+       margin: 50px auto 0px auto;
+       border: 1px solid #CCCCCC;
+     }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+     // new ObjectModels().main();
+     new GridExample().main();
+    </script>
+  </body>
+</html>
